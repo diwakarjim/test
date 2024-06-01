@@ -3,35 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My GitHub Pages Website</title>
-    <style>
-        /* Add your CSS styles here */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
-            color: #333;
+    <title>Fetch Incidents from ServiceNow</title>
+    <script>
+        function fetchIncidents() {
+            // ServiceNow instance details
+            const instanceUrl = 'https://dev228163.service-now.com';
+            const username = 'admin';
+            const password = 'w1y!R7cDy%NZ';
+
+            // Base64 encode the credentials for Basic Authentication
+            const authString = btoa(`${username}:${password}`);
+
+            // Fetch incidents from ServiceNow
+            fetch(`${instanceUrl}/api/now/table/incident`, {
+                headers: {
+                    'Authorization': `Basic ${authString}`,
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(data => {
+                console.log('Fetched Incidents:', data);
+                // Process the fetched incident data here
+            })
+            .catch(error => {
+                console.error('Error fetching incidents:', error);
+                // Handle errors here
+            });
         }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-        h1 {
-            color: #007bff;
-        }
-        p {
-            line-height: 1.6;
-        }
-    </style>
+    </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to My GitHub Pages Website</h1>
-        <p>This is a basic example of an HTML file for a GitHub Pages website. You can customize this file and add more content to create your own website.</p>
-        <p>GitHub Pages allows you to host static websites directly from your GitHub repositories.</p>
-        <p>Happy coding!</p>
-    </div>
+    <button onclick="fetchIncidents()">Fetch Incidents</button>
 </body>
 </html>
